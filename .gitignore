@@ -1,0 +1,10 @@
+# venv
+venv/
+git-token.txt
+.idea
+nginx/
+docker-compose.yml
+Dockerfile
+entrypoint.sh
+.env
+db.sqlite3
