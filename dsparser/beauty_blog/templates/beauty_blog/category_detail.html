@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ object.name }}
+{% endblock %}
+{% block header %}
+    {% include 'beauty_blog/header.html' %}
+{% endblock %}
+{% block content %}
+    <h1>Детальная страница со статьями для {{ object.title }}</h1>
+{% for article in object.cat_articles.values %}
+    <a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>
+    <br>
+    {{ article.description }}
+{% endfor %}
+{% endblock %}
