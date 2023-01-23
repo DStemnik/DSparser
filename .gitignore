@@ -3,4 +3,5 @@ venv/
 git-token.txt
 .idea
 .env
-
+dsparser/static
+db.sqlite3
