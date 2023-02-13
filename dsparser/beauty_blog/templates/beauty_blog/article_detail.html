@@ -4,10 +4,6 @@
     {{ article.title }}
 {% endblock %}
 
-{% block header %}
-    {% include 'beauty_blog/header.html' %}
-{% endblock %}
-
 {% block content %}
     <h1>{{ article.title }}</h1><br>
     {{ article.description|safe }}

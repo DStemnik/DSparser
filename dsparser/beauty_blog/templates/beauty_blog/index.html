@@ -1,16 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Главная страница
 {% endblock %}
-{% block header %}
-    {% include 'beauty_blog/header.html' %}
-{% endblock %}
+
 {% block content %}
-    {% for article in articles %}
-        {{ article.title }} <br>
-        {{ article.description }}
 
-    {% endfor %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+{% for article in articles %}
+    <div class="col">
+        <div class="card h-100">
+            <a href="{% url 'article_detail' article.slug %}">
+            {% if article.cover  %}
+                <img src="{{ article.cover.url }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="{% static 'beauty_blog/none.jpg' %}" class="card-img-top" alt="...">
+            {% endif %}
 
+            </a>
+            <div class="card-body">
+                <a href="{% url 'article_detail' article.slug %}">
+                <h5 class="card-title">{{ article.title }}</h5>
+                </a>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Добавлено: {{ article.created_at }}</small>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<div>{{ object_list.cat_articles }}</div>
 {% endblock %}
+
+

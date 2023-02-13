@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
+{% load mptt_tags %}
 {% block title %}
     {{ object.name }}
 {% endblock %}
-{% block header %}
-    {% include 'beauty_blog/header.html' %}
-{% endblock %}
+
 {% block content %}
     <h1>Детальная страница со статьями для {{ object.title }}</h1>
+    <p>{{ object.description }}</p>
+    <h1>{% for i in object.get_children %}
+        <a href="{{ i.get_absolute_url }}">{{ i.title }}</a>
+        {% endfor %}
+    </h1>
+
 {% for article in object.cat_articles.values %}
     <a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a>
     <br>

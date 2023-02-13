@@ -14,18 +14,17 @@ class PostAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
+@admin.register(Article)
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     form = PostAdminForm
-    fields = ['title', 'slug', 'meta_description', 'description', 'category',
-              'main']
+    fields = ['title', 'slug', 'description', 'category',
+              'cover', 'main']
+    list_display = ('title', 'category', 'main',)
+    list_editable = ('main', 'category')
+    list_filter = ('main', )
 
 
-admin.site.register(Article, PostAdmin)
-
-
+@admin.register(Category)
 class CategoryAdmin(DjangoMpttAdmin):
     prepopulated_fields = {"slug": ("title",)}
-
-
-admin.site.register(Category, CategoryAdmin)

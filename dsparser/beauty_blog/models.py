@@ -8,12 +8,12 @@ class Category(MPTTModel):
     slug = models.SlugField(max_length=50, unique=True)
     parent = TreeForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL,
-                            related_name='children', db_index=True,
+                            related_name='children',
+                            db_index=True,
                             verbose_name='Родительская категория')
     description = models.TextField(blank=True, verbose_name='Описание')
-    meta_description = models.TextField(blank=True,
-                                        max_length=120,
-                                        verbose_name='Мета-описание')
+    cover = models.ImageField(upload_to='images/', null=True, blank=True,
+                              verbose_name='Обложка')
 
     class MPTTMeta:
         order_insertion_by = ['title']
@@ -34,12 +34,15 @@ class Article(models.Model):
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     description = models.TextField(blank=True, verbose_name='Содержание')
     slug = models.SlugField(max_length=150, unique=True, verbose_name='ЧПУ')
-    category = TreeManyToManyField(Category, related_name='cat_articles',
-                                   verbose_name='Категория')
+    category = TreeForeignKey(Category,
+                              related_name='cat_articles',
+                              verbose_name='Категория',
+                              null=True,
+                              on_delete=models.SET_NULL)
     main = models.BooleanField(default=False, verbose_name='Главная')
-    meta_description = models.TextField(blank=True,
-                                        max_length=120,
-                                        verbose_name='Мета-описание')
+    cover = models.ImageField(upload_to='images/', null=True, blank=True,
+                              verbose_name='Обложка')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Статья'
@@ -50,5 +53,10 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article_detail', kwargs={'slug': self.slug})
+
+    def get_category(self):
+        return ", ".join([str(p) for p in self.category.all()])
+
+    get_category.short_description = 'Категория/и'
 
 
